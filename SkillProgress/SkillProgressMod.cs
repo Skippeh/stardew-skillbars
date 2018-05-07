@@ -14,8 +14,6 @@ namespace SkillProgress
         public SpriteBatch SpriteBatch { get; private set; }
         
         private ProgressBarsRenderer progressBarsRenderer;
-
-        private KeyboardState keyboardState;
         
         public override void Entry(IModHelper helper)
         {
@@ -81,19 +79,11 @@ namespace SkillProgress
 
         private void OnTick(object sender, EventArgs e)
         {
-            var lastKeyboardState = keyboardState;
-            keyboardState = Keyboard.GetState();
-            
             if (Game1.currentGameTime == null || progressBarsRenderer == null)
                 return;
             
             if (!Context.IsPlayerFree)
                 return;
-
-            if (keyboardState.IsKeyDown(Keys.F1) && lastKeyboardState.IsKeyUp(Keys.F1))
-            {
-                progressBarsRenderer.ShowRandom();
-            }
 
             progressBarsRenderer.Tick();
         }

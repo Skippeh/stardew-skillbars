@@ -277,20 +277,5 @@ namespace SkillProgress
                 kv.Value.Dispose();
             }
         }
-
-        public void ShowRandom()
-        {
-            int randIndex;
-            
-            while (true)
-            {
-                randIndex = new Random().Next(0, 6);
-
-                if (((SkillType) randIndex) != SkillType.Luck)
-                    break;
-            }
-
-            animationStates[(SkillType) randIndex].Touch();
-        }
     }
 }
