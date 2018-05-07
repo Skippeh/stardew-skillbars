@@ -240,7 +240,6 @@ namespace SkillProgress
                     if (lastVisibleBars.All(kv => kv.Key != visibleBars[i].Key))
                     {
                         listAnimation.SetY(yTarget);
-                        SkillProgressMod.Instance.Monitor.Log($"SetY {visibleBars[i].Key}");
                     }
                     else
                         listAnimation.SetTargetY(yTarget);
