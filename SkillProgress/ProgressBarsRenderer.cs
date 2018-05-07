@@ -45,7 +45,7 @@ namespace SkillProgress
             private State? lastState;
 
             private static readonly Vector2 maxOffset = new Vector2(-5, 0);
-            private const float showTime = 20f;
+            private const float showTime = 60f;
             private static int maxListOrder = 0;
             
             public AnimationState()
