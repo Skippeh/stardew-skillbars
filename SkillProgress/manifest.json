@@ -1,0 +1,10 @@
+{
+  "Name": "Skill Progress",
+  "Author": "Skipcast",
+  "Version": "1.0.0",
+  "Description": "Adds experience bars to show current xp of the relevant skills.",
+  "UniqueID": "Skipcast.SkillProgress",
+  "EntryDll": "SkillProgress.dll",
+  "MinimumApiVersion": "2.6-beta.8",
+  "UpdateKeys": []
+}
