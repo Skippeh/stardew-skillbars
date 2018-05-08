@@ -230,19 +230,22 @@ namespace SkillProgress
             var lastVisibleBars = visibleBars;
             visibleBars = progressBars.Where(kv => animationStates[kv.Key].Opacity > 0).OrderBy(kv => animationStates[kv.Key].ListOrder).ToList();
 
-            if (lastVisibleBars != null && lastVisibleBars.Count > 0)
+            if (!renderToTexture)
             {
-                for (int i = visibleBars.Count - 1; i >= 0; --i)
+                if (lastVisibleBars != null && lastVisibleBars.Count > 0)
                 {
-                    var listAnimation = listAnimations[visibleBars[i].Key];
-                    var yTarget = i * (SkillProgressBar.TotalSize.Y + 2);
-
-                    if (lastVisibleBars.All(kv => kv.Key != visibleBars[i].Key))
+                    for (int i = visibleBars.Count - 1; i >= 0; --i)
                     {
-                        listAnimation.SetY(yTarget);
+                        var listAnimation = listAnimations[visibleBars[i].Key];
+                        var yTarget = i * (SkillProgressBar.TotalSize.Y + 2);
+
+                        if (lastVisibleBars.All(kv => kv.Key != visibleBars[i].Key))
+                        {
+                            listAnimation.SetY(yTarget);
+                        }
+                        else
+                            listAnimation.SetTargetY(yTarget);
                     }
-                    else
-                        listAnimation.SetTargetY(yTarget);
                 }
             }
 
