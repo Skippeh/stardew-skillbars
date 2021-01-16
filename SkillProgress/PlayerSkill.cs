@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using StardewValley;
 
 namespace SkillProgress
@@ -30,7 +31,7 @@ namespace SkillProgress
 
         public static PlayerSkill FromPlayer(Farmer farmer)
         {
-            return new PlayerSkill(farmer.experiencePoints);
+            return new PlayerSkill(farmer.experiencePoints.ToArray());
         }
 
         public SkillType[] GetChanges(PlayerSkill other)
@@ -52,6 +53,18 @@ namespace SkillProgress
         {
             if (other == default(PlayerSkill)) throw new ArgumentNullException(nameof(other));
             return GetChanges(other).FirstOrDefault();
+        }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+
+            for (int i = 0; i < points.Length; ++i)
+            {
+                sb.AppendLine($"{(SkillType) i}: {points[i]}");
+            }
+            
+            return sb.ToString();
         }
 
         #region Equality

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -91,6 +92,7 @@ namespace SkillProgress
 
         public void Render()
         {
+            var oldRenderTargets = Game1.graphics.GraphicsDevice.GetRenderTargets();
             Game1.graphics.GraphicsDevice.SetRenderTarget(renderTarget);
             Game1.graphics.GraphicsDevice.Clear(Color.Transparent);
 
@@ -100,8 +102,7 @@ namespace SkillProgress
             DrawSkillType();
             spriteBatch.End();
 
-            Game1.graphics.GraphicsDevice.SetRenderTarget(null);
-            Game1.graphics.GraphicsDevice.Clear(new Color(5, 3, 4));
+            Game1.graphics.GraphicsDevice.SetRenderTargets(oldRenderTargets);
         }
 
         private void DrawBackground()

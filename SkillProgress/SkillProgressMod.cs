@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
 using StardewValley;
 
 namespace SkillProgress
@@ -11,19 +12,17 @@ namespace SkillProgress
     {
         public static SkillProgressMod Instance { get; private set; }
         
-        public SpriteBatch SpriteBatch { get; private set; }
-        
         private ProgressBarsRenderer progressBarsRenderer;
         
         public override void Entry(IModHelper helper)
         {
             Instance = this;
             
-            StardewModdingAPI.Events.GameEvents.UpdateTick += OnTick;
-            StardewModdingAPI.Events.GraphicsEvents.OnPreRenderEvent += OnPreRender;
-            StardewModdingAPI.Events.GraphicsEvents.OnPostRenderHudEvent += OnGui;
-            StardewModdingAPI.Events.SaveEvents.AfterLoad += OnAfterLoad;
-            StardewModdingAPI.Events.TimeEvents.AfterDayStarted += AfterDayStarted;
+            helper.Events.GameLoop.UpdateTicked += OnTick;
+            helper.Events.Display.Rendering += OnPreRender;
+            helper.Events.Display.RenderedHud += OnGui;
+            helper.Events.GameLoop.SaveLoaded += OnAfterLoad;
+            helper.Events.GameLoop.DayStarted += AfterDayStarted;
 
             var cursorsTexture = helper.Content.Load<Texture2D>("LooseSprites/Cursors.xnb", ContentSource.GameContent);
             
@@ -53,16 +52,14 @@ namespace SkillProgress
             };
             
             SkillProgressBar.UiTexture = cursorsTexture;
-
-            SpriteBatch = new SpriteBatch(Game1.graphics.GraphicsDevice);
         }
 
-        private void OnAfterLoad(object sender, EventArgs e)
+        private void OnAfterLoad(object sender, SaveLoadedEventArgs e)
         {
             progressBarsRenderer = new ProgressBarsRenderer(Game1.player);
         }
 
-        private void AfterDayStarted(object sender, EventArgs e)
+        private void AfterDayStarted(object sender, DayStartedEventArgs e)
         {
             progressBarsRenderer?.HideBars();
         }
@@ -77,7 +74,7 @@ namespace SkillProgress
             }
         }
 
-        private void OnTick(object sender, EventArgs e)
+        private void OnTick(object sender, UpdateTickedEventArgs e)
         {
             if (Game1.currentGameTime == null || progressBarsRenderer == null)
                 return;
@@ -88,15 +85,15 @@ namespace SkillProgress
             progressBarsRenderer.Tick();
         }
 
-        private void OnPreRender(object sender, EventArgs e)
+        private void OnPreRender(object sender, RenderingEventArgs e)
         {
             if (!Context.IsPlayerFree || progressBarsRenderer == null)
                 return;
-            
+
             progressBarsRenderer.Render();
         }
 
-        private void OnGui(object sender, EventArgs e)
+        private void OnGui(object sender, RenderedHudEventArgs e)
         {
             if (!Context.IsPlayerFree || progressBarsRenderer == null)
                 return;

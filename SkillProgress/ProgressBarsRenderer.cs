@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using StardewModdingAPI;
 using StardewValley;
 
 namespace SkillProgress
@@ -179,7 +181,7 @@ namespace SkillProgress
                 
                 progressBars.Add((SkillType) i, progressBar);
                 animationStates.Add((SkillType) i, new AnimationState());
-                listAnimations.Add((SkillType)i, new ListAnimation());
+                listAnimations.Add((SkillType) i, new ListAnimation());
             }
         }
         
@@ -252,7 +254,7 @@ namespace SkillProgress
             foreach (var kv in visibleBars)
             {
                 var animationState = animationStates[kv.Key];
-                
+
                 if (animationState.Opacity > 0)
                 {
                     if (!renderToTexture)
@@ -260,8 +262,9 @@ namespace SkillProgress
                         var listAnimation = listAnimations[kv.Key];
                         Vector2 drawPosition = Vector2.Zero;
                         
-                        drawPosition.X = (Game1.viewport.Width / 2) - (SkillProgressBar.TotalSize.X / 2);
-                        drawPosition.Y = (Game1.viewport.Height - 135) - listAnimation.Y;
+                        Vector2 viewportSize = Game1.graphics.GraphicsDevice.Viewport.Size();
+                        drawPosition.X = (viewportSize.X / 2) - (SkillProgressBar.TotalSize.X / 2);
+                        drawPosition.Y = (viewportSize.Y - 135) - listAnimation.Y;
 
                         drawPosition += animationState.PositionOffset;
                         
